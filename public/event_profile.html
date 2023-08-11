@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Profile</title>
+    <link rel="stylesheet" href="stylesheets/style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+    <link rel="shortcut icon" type="image/x-icon" href="https://cdn0.iconfinder.com/data/icons/find-a-job-and-interview-flat/512/conversation_communication_bubble_speech_chat_message_speak_talk_ask_answer-256.png" />
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="scripts/navbar.js" defer></script>
+    <script src="scripts/event_profile.js" defer></script>
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="navbar-container">
+        <a href="/user" class="navbar-logo"><img src="https://cdn0.iconfinder.com/data/icons/find-a-job-and-interview-flat/512/conversation_communication_bubble_speech_chat_message_speak_talk_ask_answer-256.png" alt= "Logo"></a>
+        <div class="navbar-links">
+          <a href="/club_user">Clubs</a>
+          <a href="/event_user">Events</a>
+          <a href="/feed">Feed</a>
+        </div>
+        <div class="navbar-buttons">
+          <button type="button" onclick=createClub() class="navbar-button">Create new club</button>
+          <!-- <a href="/login" id="login-btn" class="navbar-button">Log in</a> -->
+          <!-- <a href="/signup" id="signup-btn" class="navbar-button navbar-button-primary">Sign up</a> -->
+        </div>
+        <div class="dropdown">
+              <div class="avatar">
+              <img src="https://t4.ftcdn.net/jpg/03/49/49/79/360_F_349497933_Ly4im8BDmHLaLzgyKg2f2yZOvJjBtlw5.jpg" alt="Avatar">
+              </div>
+              <div class="dropdown-content">
+              <a href="#"> Events</a>
+              <a href="/profile">Profile</a>
+              <a href="#" onclick=logout()>Log out </a>
+              <!-- <a href="#" action="/logout" method="POST">Log out</a> -->
+              </div>
+        </div>
+      </div>
+      <hr>
+    </nav>
+</header>
+  <main id="event-profile" >
+    <section class="event-introduction">
+      <h1>{{ eventProfile.name }}</h1>
+      <a style="margin-top: 10px;" :href="'edit_event_profile.html?id=' + eventProfile.id" class="button" v-if="eventProfile.is_admin">Edit Event</a>
+      <div class="img-introduction event-img-profile">
+          <img :src="eventProfile.thumbnail" alt="Event Intro" >
+      </div>
+      <h2>When and where</h2>
+      <table class="event-details-table">
+        <tr>
+          <td class="event-detail-left">
+            <div class="icon-event-detail">
+              <i class="fa fa-calendar"></i>
+            </div>
+          </td>
+          <td class="event-detail-right">
+            <div class="event-detail-label">Date and Time:</div>
+            <div class="event-detail-value">{{ eventProfile.start_time }}</div>
+          </td>
+          <td class="event-detail-left">
+            <div class="icon-event-detail">
+              <i class="fa fa-map-marker-alt"></i>
+            </div>
+            </td>
+          <td class="event-detail-right">
+            <div class="event-detail-label">Location:</div>
+            <div class="event-detail-value">{{ eventProfile.location }}</div>
+          </td>
+        </tr>
+      </table>
+      <h2>About this event</h2>
+      <p>{{ eventProfile.description }}</p>
+      <h2>Category</h2>
+      <div class="event-tags-bar">
+        <a href="#" class="event-tag">{{ eventProfile.category }}</a>
+      </div>
+      <h2>About the Organiser</h2>
+      <div class="organizer-card">
+        <div class="organizer-card-image">
+          <img :src="clubProfile.thumbnail" alt="Event Image" />
+        </div>
+        <div class="organizer-card-content">
+          <p style="color: grey;">Organized by</p>
+          <h2 class="organizer-name">{{ clubProfile.name }}</h2>
+          <div class="organizer-followers"><p><i class="fas fa-user"></i>{{ clubProfile.members }}</p></div>
+          <p class="organizer-description">{{ clubProfile.description }}</p>
+          <a class="button" v-if="!clubProfile.is_member" @click="joinClub(clubProfile.id); clubProfile.is_member = true; clubProfile.members++">Join Club</a>
+          <p class="button" v-else>Joined</p>
+        </div>
+      </div>
+      <div v-if="eventProfile.is_admin">
+        <button type="button" @click="getRSVP" class="button" style="margin-top: 10px;">Show RSVPs</button>
+        <div v-if="showRsvps">
+          <h2>RSVPs List</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Email</th>
+                <th>Name</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(rsvp, index) in rsvps">
+                <td>{{ index + 1 }}</td>
+                <td>{{ rsvp.email }}</td>
+                <td>{{ rsvp.name }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+  </section>
+  </main>
+
+
+
+
+<footer id="main-footer">
+    <div class="row primary">
+
+      <div class="column links">
+        <h3 class="h3_f">Contact</h3>
+         <ul>
+          <li>
+           Mobile Number: (+61)458342123
+          </li>
+          <li>
+           Email: contact@universe.au
+          </li>
+          <li>
+          <a class="a-text" href="#terms-of-services">Terms Of Service</a>
+          </li>
+          <li>
+          <a class="a-text" href="#support">Support</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="column about">
+
+      <h3 class="h3_f"> UniVerse</h3>
+
+       <p>
+        UniVerse is a social platform designed for students to connect with each other and find clubs to join. Our platform provides a safe and engaging environment for students to settle in
+      </p>
+    </div>
+
+    <div class="column subscribe">
+      <h3 class="h3_f">Newsletter</h3>
+       <div>
+        <input id="input_f" type="email" placeholder="Your email id here" />
+        <button type="submit" id="b_f">Subscribe</button>
+       </div>
+
+     </div>
+
+     </div>
+
+    <div class="row copyright">
+      <div class="footer-menu">
+
+      <a href="#">Home</a>
+      <a href="">Group</a>
+      <a href="">Event</a>
+      <a href="">Notifications</a>
+
+      </div>
+       <p>Copyright &copy; 2023 UniVerse</p>
+    </div>
+  </footer>
+</body>
+</html>

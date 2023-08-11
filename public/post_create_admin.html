@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>UniVerse</title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+    <link rel="shortcut icon" type="image/x-icon" href="https://cdn0.iconfinder.com/data/icons/find-a-job-and-interview-flat/512/conversation_communication_bubble_speech_chat_message_speak_talk_ask_answer-256.png" />
+</head>
+<body>
+    <main id="main1">
+        <div id="event-create">
+            <h1>Create an annoucement</h1>
+            <form class="event-form">
+                <label class="form-label" for="message">What's on your mind?</label>
+                <textarea id="message" name="message"></textarea>
+                <label class="form-label" for="datetime-local"> Time:</label>
+                <input type="datetime-local" class="datetime_start" name="date_start" required>
+                <label class="form-label" for="category">Post audience:</label>
+                <select class="category" name="category" required>
+                    <option value="public">Public</option>
+                    <option value="private">Private</option>
+                </select>
+                <button class="button-create" type="submit">POST</button>
+            </form>
+        </div>
+    </main>
+    <script>
+        document.querySelector('.event-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+        //function createPost() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const clubid = urlParams.get('id');
+            const content = document.querySelector('#message').value;
+            const preference = document.querySelector('.category').value;
+            const time = document.querySelector('.datetime_start').value;
+
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '/post_added?id=' + clubid);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    // Redirect to the user page
+                    window.location.href = "/club_profile_admin?id=" + clubid;
+                } else {
+                    alert('An error occurred while creating the event');
+                }
+            };
+            xhr.send(JSON.stringify({
+                 time: time,
+                 content: content,
+                 preference: preference
+            }));
+        });
+    </script>
+</body>
+</html>

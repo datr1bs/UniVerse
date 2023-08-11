@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Join Our Club</title>
+    <link rel="shortcut icon" type="image/x-icon" href="https://cdn0.iconfinder.com/data/icons/find-a-job-and-interview-flat/512/conversation_communication_bubble_speech_chat_message_speak_talk_ask_answer-256.png" />
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="scripts/navbar.js" defer></script>
+    <script src="scripts/club.js" defer></script>
+</head>
+  <body>
+    <header>
+      <nav class="navbar">
+        <div class="navbar-container">
+          <a href="/user" class="navbar-logo"><img src="https://cdn0.iconfinder.com/data/icons/find-a-job-and-interview-flat/512/conversation_communication_bubble_speech_chat_message_speak_talk_ask_answer-256.png" alt= "Logo"></a>
+          <div class="navbar-links">
+            <div class="navbar-search">
+                <form action="#" method="get">
+                  <input type="text" name="search" placeholder="Search">
+                  <button type="submit"><i class="fa fa-search"></i></button>
+                </form>
+              </div>
+            <a href="/club_user">Clubs</a>
+            <a href="/event_user">Events</a>
+            <a href="/feed">Feed</a>
+          </div>
+          <div class="navbar-buttons">
+            <button type="button" onclick=createClub() class="navbar-button">Create new club</button>
+            <!-- <a href="/login" id="login-btn" class="navbar-button">Log in</a> -->
+            <!-- <a href="/signup" id="signup-btn" class="navbar-button navbar-button-primary">Sign up</a> -->
+          </div>
+          <div class="dropdown">
+                <div class="avatar">
+                <img src="https://t4.ftcdn.net/jpg/03/49/49/79/360_F_349497933_Ly4im8BDmHLaLzgyKg2f2yZOvJjBtlw5.jpg" alt="Avatar">
+                </div>
+                <div class="dropdown-content">
+                <a href="#"> Events</a>
+                <a href="/profile">Profile</a>
+                <a href="#" onclick=logout()>Log out </a>
+                <!-- <a href="#" action="/logout" method="POST">Log out</a> -->
+                </div>
+          </div>
+        </div>
+        <hr>
+      </nav>
+    </header>
+    <main class = "main_group">
+      <section class="introduction">
+          <h1>
+            <strong> Welcome to Universe Clubs</strong>
+           </h1>
+           <h4>
+            <strong>Find your people. Join a club. ♣</strong>
+           </h4>
+           <p>Here at Universe, we love clubs! Our team is here to help facilitate over 160 clubs so they can autonomously function and thrive.</p>
+           <p>Whether you are a new student, returning student, international student or exchange student, joining a club is one of the best ways to
+            find friendship and fulfilment at the University of Adelaide.</p>
+          <p>Looking for a particlar club? Or just to browse and see what clubs we have on campus? Check out our clubs <a class="a-text" href="#group">below</a> </p>
+          <img src="https://secure.meetupstatic.com/next/images/shared/online_events.svg?w=640" alt="">
+      </section>
+
+      <section class="trending-categories group-categories">
+        <h2>Trending Categories</h2>
+        <ul>
+          <li><a href="#">Music</a></li>
+          <li><a href="#">Food &amp; Drink</a></li>
+          <li><a href="#">Arts</a></li>
+          <li><a href="#">Sports &amp; Fitness</a></li>
+          <li><a href="#">Health</a></li>
+          <li><a href="#">Business</a></li>
+        </ul>
+      </section>
+      <h2 class="h2-group" >Our Clubs</h2>
+      <section class="section" id="group">
+
+        <div id="app_club">
+          <div class="group-card" v-for="club in clubs" :key="club.id">
+            <div class="card-content">
+              <div class="group-image">
+                <img :src="club.thumbnail" alt="Group Image">
+              </div>
+              <div class="group-info">
+                <a :href="'/club_profile?id=' + club.id"><h3>{{ club.name }}</h3></a>
+                <p class="group-location">{{ club.location }}</p>
+                <p class="group-description">{{ club.description }}</p>
+                <p class="group-members"><i class="fas fa-user"></i> {{ club.members }}</p>
+                <a class="button" v-if="!club.is_member" @click="joinClub(club.id); club.is_member = true; club.members++">Join Club</a>
+                <p class="button" v-else>Joined</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="section" id="contact">
+        <h2 class="h2-group">Contact Us</h2>
+        <p>If you have any questions or feedback, please don't hesitate to contact us.</p>
+        <form class="form">
+          <label class="form-label" for="name">Name:</label>
+          <input type="text" class="name" name="name" required>
+          <label class="form-label" for="email">Email:</label>
+          <input type="email" class="email" name="email" required>
+          <label class="form-label" for="message">Message:</label>
+          <textarea id="message" name="message" required></textarea>
+          <button class="button-submit" type="submit">Send Message</button>
+        </form>
+      </section>
+    </main>
+    <footer>
+      <div class="row primary">
+
+        <div class="column links">
+          <h3 class="h3_f">Contact</h3>
+           <ul class="footer-list">
+            <li class="footer-details">
+             Mobile Number: (+61)458342123
+            </li>
+            <li>
+             Email: contact@universe.au
+            </li>
+            <li>
+            <a href="#terms-of-services">Terms Of Service</a>
+            </li>
+            <li>
+            <a href="#support">Support</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="column about">
+
+        <h3 class="h3_f"> UniVerse</h3>
+
+         <p>
+          UniVerse is a social platform designed for students to connect with each other and find clubs to join. Our platform provides a safe and engaging environment for students to settle in
+        </p>
+      </div>
+
+      <div class="column subscribe">
+        <h3 class="h3_f">Newsletter</h3>
+         <div>
+          <input id="input_f" type="email" placeholder="Your email id here" />
+          <button type="submit" id="b_f">Subscribe</button>
+         </div>
+
+       </div>
+
+       </div>
+
+      <div class="row copyright">
+        <div class="footer-menu">
+
+        <a href="/user">Home</a>
+        <a href="/club_user">Club</a>
+        <a href="/event_user">Event</a>
+        <a href="/feed">Notifications</a>
+
+        </div>
+         <p>Copyright &copy; 2023 UniVerse</p>
+      </div>
+
+    </footer>
+  </body>
+  </html>

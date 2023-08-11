@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <link rel="shortcut icon" type="image/x-icon" href="https://cdn0.iconfinder.com/data/icons/find-a-job-and-interview-flat/512/conversation_communication_bubble_speech_chat_message_speak_talk_ask_answer-256.png" />
+  <title>User List</title>
+  <style>
+    .user {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
+    .column {
+      flex: 1;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+</head>
+<body>
+  <h1>User List</h1>
+
+  <div id="userList">
+    <div v-for="(user, index) in users" class="user">
+      <img class="avatar" :src="user.avatar" :alt="user.name + ' avatar'" />
+      <div class="column">Name: {{ user.name }}</div>
+      <div class="column">Num Clubs: {{ user.clubs }}</div>
+      <div class="column">Role: {{ user.role }}</div>
+      <button type="button" @click="deleteUser(index)">Delete</button>
+      <button type="button" v-if="user.role != 'admin'" @click="changeRole(index)">make admin</button>
+    </div>
+  </div>
+
+  <script>
+    new Vue({
+      el: "#userList",
+      data: {
+        users: [],
+      },
+      created() {
+         //Fetch data from the server when the Vue instance is created
+        this.fetchUsers();
+      },
+      methods: {
+        fetchUsers() {
+          var xhr = new XMLHttpRequest();
+          xhr.open('POST', '/fetch_users'); // Replace with your server endpoint for fetching users
+          xhr.setRequestHeader('Content-Type', 'application/json');
+          xhr.onload = function() {
+            if (xhr.status === 200) {
+              // Parse the JSON response and append to the users array
+              var response = JSON.parse(xhr.responseText);
+              const emails = response.emails;
+              const roles = response.admins;
+              const num_clubs = response.num_clubs;
+              const ids = response.ids;
+              const total_ids = response.total_ids;
+              const obj_ids = response.obj;
+              console.log(total_ids);
+              console.log(obj_ids);
+              for (let i = 0; i < total_ids.length; i++) {
+                if (ids.includes(total_ids[i])) {
+                  continue;
+                } else {
+                  obj_ids[total_ids[i]] = 0;
+                }
+              }
+              console.log(obj_ids);
+              this.users = total_ids.map((id, index) => ({
+                name: emails[index],
+                avatar: "https://t4.ftcdn.net/jpg/03/49/49/79/360_F_349497933_Ly4im8BDmHLaLzgyKg2f2yZOvJjBtlw5.jpg",
+                clubs: obj_ids[id],
+                role: roles[index]
+              }));
+            } else {
+              console.error('Error: ' + xhr.status);
+            }
+          }.bind(this);
+          xhr.send();
+        },
+        changeRole(index) {
+            const promotion_email = this.users[index].name;
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/set_admin'); // Replace with your server endpoint for fetching users
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(JSON.stringify({PromoteEmail: promotion_email}));
+            this.users[index].role = "admin";
+            // write ajax to call to db and set is_admin = 1
+            // POST request router.post("/set_admin")
+        },
+        deleteUser(index) {
+            const delete_email = this.users[index].name;
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/delete_user'); // Replace with your server endpoint for fetching users
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(JSON.stringify({deleteEmail: delete_email}));
+            this.users.splice(index, 1);
+            // write ajax to call to db and update role to 1
+        }
+      }
+    });
+  </script>
+</body>
+</html>

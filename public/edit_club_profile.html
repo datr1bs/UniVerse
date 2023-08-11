@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>UniVerse</title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+    <link rel="shortcut icon" type="image/x-icon" href="https://cdn0.iconfinder.com/data/icons/find-a-job-and-interview-flat/512/conversation_communication_bubble_speech_chat_message_speak_talk_ask_answer-256.png" />
+</head>
+<body>
+    <main id="main1">
+        <div id="club-create">
+            <h1>Edit a Club</h1>
+            <form class="edit-club-form ">
+                <label class="form-label" for="event-name">Club Name:</label>
+                <input type="text" class="edit-club-name" name="edit-club-name" required>
+                <label class="form-label" for="message">Club Description:</label>
+                <textarea id="message" name="message"></textarea>
+                <label class="form-label" for="ava_club">Avatar URL:</label>
+                <input type="text" class="ava_club" name="ava_club" required>
+                <label class="form-label" for="category">Category:</label>
+                <select class="edit-club-category" name="edit-club-category" required>
+                    <option value="entertainment">Entertainment</option>
+                    <option value="sport">Sport</option>
+                    <option value="education">Education</option>
+                </select>
+                <button class="button-create" type="submit">Edit a Club</button>
+            </form>
+            <script>
+                document.querySelector('.edit-club-form').addEventListener('submit', function(club) {
+                  club.preventDefault();
+                  const urlParams = new URLSearchParams(window.location.search);
+                  const clubid = urlParams.get('id');
+                  console.log("EDIT: ", clubid);
+                  // Get the updated form values
+                  const clubName = document.querySelector('.edit-club-name').value;
+                  const description = document.querySelector('#message').value;
+                  const avaURL = document.querySelector('.ava_club').value;
+                  const category = document.querySelector('.edit-club-category').value;
+                  // Create a new XMLHttpRequest instance
+                  const xhr = new XMLHttpRequest();
+                  xhr.open('POST', '/edit_club?id=' + clubid);
+                  xhr.setRequestHeader('Content-Type', 'application/json');
+                  xhr.onload = function() {
+                    if (xhr.status === 200) {
+                      // Event updated successfully
+                      console.log("Club updated successfully");
+                      window.location.href = "/club_profile?id=" + clubid;
+                    } else {
+                      alert('An error occurred while updating the Club');
+                    }
+                  };
+                  xhr.send(
+                    JSON.stringify({
+                      clubName: clubName,
+                      clubDescription: description,
+                      clubCategory: category,
+                      clubAvatar: avaURL
+                    })
+                  );
+                });
+              </script>
+        </div>
+    </main>
+</body>
+</html>

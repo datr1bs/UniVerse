@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" href="https://cdn0.iconfinder.com/data/icons/find-a-job-and-interview-flat/512/conversation_communication_bubble_speech_chat_message_speak_talk_ask_answer-256.png" />
+    <title>Events</title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="scripts/navbar.js" defer></script>
+    <script src="scripts/event.js" defer></script>
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="navbar-container">
+        <a href="/user" class="navbar-logo"><img src="https://cdn0.iconfinder.com/data/icons/find-a-job-and-interview-flat/512/conversation_communication_bubble_speech_chat_message_speak_talk_ask_answer-256.png" alt= "Logo"></a>
+        <div class="navbar-links">
+          <a href="/club_user">Clubs</a>
+          <a href="/event_user">Events</a>
+          <a href="/feed">Feed</a>
+        </div>
+        <div class="navbar-buttons">
+          <button type="button" onclick=createClub() class="navbar-button">Create new club</button>
+          <!-- <a href="/login" id="login-btn" class="navbar-button">Log in</a> -->
+          <!-- <a href="/signup" id="signup-btn" class="navbar-button navbar-button-primary">Sign up</a> -->
+        </div>
+        <div class="dropdown">
+              <div class="avatar">
+              <img src="https://t4.ftcdn.net/jpg/03/49/49/79/360_F_349497933_Ly4im8BDmHLaLzgyKg2f2yZOvJjBtlw5.jpg" alt="Avatar">
+              </div>
+              <div class="dropdown-content">
+              <a href="/profile">Profile</a>
+              <a href="#" onclick=logout()>Log out </a>
+              <!-- <a href="#" action="/logout" method="POST">Log out</a> -->
+              </div>
+        </div>
+      </div>
+      <hr>
+    </nav>
+</header>
+<main id="events">
+  <section class="event-introduction">
+      <div class="event-description">
+          <h1>Welcome to Universe Events</h1>
+          <h4>Best events in <strong>Adelaide</strong> </h4>
+          <p>Here at Universe, we love events! Our team is here to help facilitate over 100 events so they can autonomously function and thrive.</p>
+          <p> Whether you are a new student, returning student, international student or exchange student, Looking for something to do in Adelaide?
+              Whether you're a local, new in town or just cruising through we've got loads of great tips and events.You can explore by location,
+              what's popular, our top picks, free stuff... you got this. <a class="a-text" href="#event">Ready</a> ?
+          </p>
+      </div>
+      <div class="img-introduction">
+          <img src="https://youx.org.au/pageassets/interests/clubs/Landscape_image.png" alt="Event Intro" >
+      </div>
+  </section>
+
+  <section class="trending-categories">
+      <h2>Trending Categories</h2>
+      <ul>
+        <li><a href="#">Music</a></li>
+        <li><a href="#">Food &amp; Drink</a></li>
+        <li><a href="#">Arts</a></li>
+        <li><a href="#">Sports &amp; Fitness</a></li>
+        <li><a href="#">Health</a></li>
+        <li><a href="#">Business</a></li>
+      </ul>
+    </section>
+
+
+  <h2>Our events</h2>
+  <div id="app">
+    <section class="event-section">
+      <div class="swiper mySwiper container">
+        <div class="swiper-wrapper content">
+          <div class="swiper-slide event-card" v-for="event in events" :key="event.id">
+            <div class="card-content">
+              <div class="image">
+                <img :src="event.thumbnail" alt="">
+              </div>
+              <div class="event-details">
+                <a :href="'/event_profile?id=' + event.id"><h3 class="event-title">{{ event.name }}</h3></a>
+                <p class="event-date">{{ event.start_time }}</p>
+                <p class="event-location">{{ event.location }}</p>
+                <p><i class="fas fa-user"></i> {{ event.attendees }}</p>
+              </div>
+              <a class="event-button" v-if="!event.is_participant" @click="joinEvent(event.id); event.is_participant = true; event.attendees++">Register</a>
+              <a style="background-color: grey" class="event-button" v-else>Registered</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-pagination"></div>
+    </section>
+  </div>
+</main>
+
+
+<footer>
+  <div class="row primary">
+
+    <div class="column links">
+      <h3 class="h3_f">Contact</h3>
+       <ul class="footer-list">
+        <li class="footer-details">
+         Mobile Number: (+61)458342123
+        </li>
+        <li>
+         Email: contact@universe.au
+        </li>
+        <li>
+        <a href="#terms-of-services">Terms Of Service</a>
+        </li>
+        <li>
+        <a href="#support">Support</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="column about">
+
+    <h3 class="h3_f"> UniVerse</h3>
+
+     <p>
+      UniVerse is a social platform designed for students to connect with each other and find clubs to join. Our platform provides a safe and engaging environment for students to settle in
+    </p>
+  </div>
+
+  <div class="column subscribe">
+    <h3 class="h3_f">Newsletter</h3>
+     <div>
+      <input id="input_f" type="email" placeholder="Your email id here" />
+      <button type="submit" id="b_f">Subscribe</button>
+     </div>
+
+   </div>
+
+   </div>
+
+  <div class="row copyright">
+    <div class="footer-menu">
+
+    <a href="#">Home</a>
+    <a href="">Group</a>
+    <a href="">Event</a>
+    <a href="">Notifications</a>
+
+    </div>
+     <p>Copyright &copy; 2023 UniVerse</p>
+  </div>
+
+</footer>
+</body>
+</html>

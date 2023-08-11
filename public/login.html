@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>LOGIN</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="shortcut icon" type="image/x-icon" href="https://cdn0.iconfinder.com/data/icons/find-a-job-and-interview-flat/512/conversation_communication_bubble_speech_chat_message_speak_talk_ask_answer-256.png" />
+
+</head>
+<body id="body_login">
+<div id="login-form-wrap">
+  <h2 id="h2_login">Login</h2>
+  <form id="login-form" action="/login" method="POST">
+    <p class="p_login">
+    <input class="input_text" type="email" id="email" name="email" placeholder="Email" required><i><span></span><span></span></i>
+    </p>
+    <p class="p_login">
+    <input class="input_email" type="password" id="password" name="password" placeholder="Password" required><i><span></span><span></span></i>
+    </p>
+    <p class="p_login">
+    <input class="input_login" type="submit" id="login" value="Login">
+    </p>
+  </form>
+  <div id="create-account-wrap">
+    <p class="p_login">Not a member? <a href="/signup">Create Account</a></p>
+  </div>
+  <hr>
+
+  <div id="g_id_onload"
+    data-client_id="440226071068-7tr2enamec6mrrjp0tvvo6bets39id3i.apps.googleusercontent.com"
+    data-context="signup"
+    data-ux_mode="popup"
+    data-callback="onSignIn"
+    data-auto_prompt="false">
+  </div>
+
+  <div class="g_id_signin"
+      data-type="standard"
+      data-shape="rectangular"
+      data-theme="outline"
+      data-text="signin_with"
+      data-size="large"
+      data-locale="en-US"
+      data-logo_alignment="left">
+  </div>
+</div>
+<script>
+
+  function decodeJwtResponse(token) {
+    // Decode the JWT token
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace('-', '+').replace('_', '/');
+    const payload = JSON.parse(atob(base64));
+
+    // Return the payload object
+    return payload;
+  }
+  function onSignIn(response) {
+  const responsePayload = decodeJwtResponse(response.credential);
+
+  console.log("ID: " + responsePayload.sub);
+  console.log('Full Name: ' + responsePayload.name);
+  console.log('Given Name: ' + responsePayload.given_name);
+  console.log('Family Name: ' + responsePayload.family_name);
+  console.log("Image URL: " + responsePayload.picture);
+  console.log("Email: " + responsePayload.email);
+
+  const xhr = new XMLHttpRequest();
+  xhr.open('POST', '/login');
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.onload = function() {
+    if (xhr.status === 200) {
+      // Redirect to the user page
+      window.location.href = "/user";
+      // ok;
+    } else {
+      alert('An error occurred while logging in with Google');
+    }
+  };
+  xhr.onerror = function() {
+    alert('An error occurred while logging in with Google');
+  };
+  xhr.send(JSON.stringify({ email: responsePayload.email, given_name: responsePayload.given_name, family_name: responsePayload.family_name, authenticated: true }));
+}
+
+  </script>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+</body>
+</html>

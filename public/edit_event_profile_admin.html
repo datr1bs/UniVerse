@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>UniVerse</title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+    <link rel="shortcut icon" type="image/x-icon" href="https://cdn0.iconfinder.com/data/icons/find-a-job-and-interview-flat/512/conversation_communication_bubble_speech_chat_message_speak_talk_ask_answer-256.png" />
+</head>
+<body>
+    <main id="main1">
+        <div id="event-create">
+            <h1>Edit an event</h1>
+            <form class="event-form">
+                <label class="form-label" for="event-name">Event Name:</label>
+                <input type="text" class="event-name" name="event-name" required>
+                <label class="form-label" for="datetime-local"> Start Time:</label>
+                <input type="datetime-local" class="datetime_start" name="date_start" required>
+                <label class="form-label" for="datetime-local"> End Time:</label>
+                <input type="datetime-local" class="datetime_end" name="date_end" required>
+                <label class="form-label" for="location">Location:</label>
+                <input type="text" class="location" name="location" required>
+                <label class="form-label" for="message">Event Description:</label>
+                <textarea id="message" name="message"></textarea>
+                <label class="form-label" for="thumbnail_event">Thumbnail URL:</label>
+                <input type="text" class="thumbnail_event" name="thumbnail_event" required>
+                <label class="form-label" for="category">Category:</label>
+                <select class="category" name="category" required>
+                    <option value="entertainment">Entertainment</option>
+                    <option value="sport">Sport</option>
+                    <option value="education">Education</option>
+                </select>
+                <button class="button-create" type="submit">Edit an Event</button>
+            </form>
+            <script>
+                document.querySelector('.event-form').addEventListener('submit', function(event) {
+                  event.preventDefault();
+
+                  const urlParams = new URLSearchParams(window.location.search);
+                  const eventid = urlParams.get('id');
+                  // Get the updated form values
+                  const eventName = document.querySelector('.event-name').value;
+                  const startTime = document.querySelector('.datetime_start').value;
+                  const endTime = document.querySelector('.datetime_end').value;
+                  const location = document.querySelector('.location').value;
+                  const description = document.querySelector('#message').value;
+                  const thumbnailURL = document.querySelector('.thumbnail_event').value;
+                  const category = document.querySelector('.category').value;
+                  // Create a new XMLHttpRequest instance
+                  const xhr = new XMLHttpRequest();
+                  xhr.open('POST', '/edit_event?id=' + eventid);
+                  xhr.setRequestHeader('Content-Type', 'application/json');
+                  xhr.onload = function() {
+                    if (xhr.status === 200) {
+                      // Event updated successfully
+                      console.log("Event updated successfully");
+                      window.location.href = "/event_admin";
+                    } else {
+                      alert('An error occurred while updating the event');
+                    }
+                  };
+                  xhr.send(
+                    JSON.stringify({
+                      eventName: eventName,
+                      eventstart_time: startTime,
+                      eventend_time: endTime,
+                      eventLocation: location,
+                      eventDescription: description,
+                      eventCategory: category,
+                      eventThumbnail: thumbnailURL
+                    })
+                  );
+                });
+              </script>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>UniVerse</title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+    <link rel="shortcut icon" type="image/x-icon" href="https://cdn0.iconfinder.com/data/icons/find-a-job-and-interview-flat/512/conversation_communication_bubble_speech_chat_message_speak_talk_ask_answer-256.png" />
+    <!-- <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script> -->
+    <script src="scripts/club_create.js" defer></script>
+</head>
+
+<body>
+    <main id = "main1">
+        <div id = "club-create">
+            <h1>Create a club</h1>
+            <form class = "club-form">
+                <label class="form-label" for="club-name">Club Name:</label>
+                <input type="text" class="club-name" name="club-name" v-model="newClub.name" required>
+                <label class="form-label" for="message">Club Description:</label>
+                <textarea id="message" name="message" v-model="newClub.description"></textarea>
+                <label class="form-label" for="club-thumbnail">Thumbnail URL:</label>
+                <input type="text" class="thumbnail" name="club-thumbnail" v-model="newClub.thumbnail" required>
+                <label class="form-label" for="category">Category:</label>
+                <select class = "category" name = "category" v-model="newClub.category" required>
+                    <option value = "faculty">Faculty</option>
+                    <option value = "hobby">Hobby</option>
+                    <option value = "sport">Sport</option>
+                    <option value = "cultural">Cultural</option>
+                </select>
+                <button class="button-create" type="submit" href="/user">Create Club</button>
+            </form>
+        </div>
+    </main>
+</body>
+</html>

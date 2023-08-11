@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <link rel="shortcut icon" type="image/x-icon" href="https://cdn0.iconfinder.com/data/icons/find-a-job-and-interview-flat/512/conversation_communication_bubble_speech_chat_message_speak_talk_ask_answer-256.png" />
+  <title>Club List</title>
+
+  <style>
+    .club {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
+    .column {
+      flex: 1;
+    }
+  </style>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="scripts/club.js" defer></script>
+</head>
+<body>
+  <h1>Club List</h1>
+
+  <div id="clubList">
+    <div v-for="(club, index) in clubs" class="club">
+      <img class="avatar" :src="club.thumbnail" :alt="club.name + ' logo'" />
+      <div class="column">Name: {{ club.name }}</div>
+      <div class="column">Description: {{ club.description }}</div>
+      <div class="column">Members: {{ club.members }}</div>
+      <button type="button" @click="deleteClub(index)">Delete</button>
+    </div>
+  </div>
+</body>
+</html>

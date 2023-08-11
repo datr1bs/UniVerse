@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" type="image/x-icon" href="https://cdn0.iconfinder.com/data/icons/find-a-job-and-interview-flat/512/conversation_communication_bubble_speech_chat_message_speak_talk_ask_answer-256.png" />
+  <title>Feed</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+  <link rel="stylesheet" href="/stylesheets/style.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="scripts/navbar.js" defer></script>
+  <script src="scripts/feed.js" defer></script>
+</head>
+
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="navbar-container">
+        <a href="/user" class="navbar-logo"><img src="https://cdn0.iconfinder.com/data/icons/find-a-job-and-interview-flat/512/conversation_communication_bubble_speech_chat_message_speak_talk_ask_answer-256.png" alt="Logo"></a>
+        <div class="navbar-links">
+          <div class="navbar-search">
+            <form action="#" method="get">
+              <input type="text" name="search" placeholder="Search">
+              <button type="submit"><i class="fa fa-search"></i></button>
+            </form>
+          </div>
+          <a href="/club_user">Clubs</a>
+          <a href="/event_user">Events</a>
+          <a href="/feed">Feed</a>
+        </div>
+        <div class="navbar-buttons">
+          <button type="button" onclick=createClub() class="navbar-button">Create new club</button>
+          <!-- <a href="/login" id="login-btn" class="navbar-button">Log in</a> -->
+          <!-- <a href="/signup" id="signup-btn" class="navbar-button navbar-button-primary">Sign up</a> -->
+        </div>
+        <div class="dropdown">
+          <div class="avatar">
+            <img src="https://t4.ftcdn.net/jpg/03/49/49/79/360_F_349497933_Ly4im8BDmHLaLzgyKg2f2yZOvJjBtlw5.jpg"
+              alt="Avatar">
+          </div>
+          <div class="dropdown-content">
+            <a href="#"> Events</a>
+            <a href="/profile">Profile</a>
+            <a href="#" onclick=logout()>Log out </a>
+            <!-- <a href="#" action="/logout" method="POST">Log out</a> -->
+          </div>
+        </div>
+      </div>
+      <hr>
+    </nav>
+  </header>
+
+  <main id="feedpage">
+    <div class="feed-page-introduction-container">
+      <h1>Welcome to the Club Post Page</h1>
+      <p>The Club Manage Post Page is a platform designed to facilitate effective club management and communication
+        within an organization.</p>
+
+
+    </div>
+    <div id="feed">
+      <div id="app">
+        <section>
+          <div class="all-my-clubs-btn">
+            <button type="button" class="all-clubs-btn" @click="allClubs = true">All clubs</button>
+
+            <button type="button" class="my-clubs-btn" @click="allClubs = false">My clubs</button>
+          </div>
+        </section>
+
+
+        <section>
+
+          <div class="all-clubs-feed" v-if="allClubs">
+            <div class="feed-item" v-for="post in all_clubs_posts" :key="post.id">
+              <div class="feed-item-header">
+                <div class="feed-item-avatar">
+                  <img :src="post.thumbnail" alt="Avatar">
+                </div>
+                <div class="feed-item-details">
+                  <a href="#" class="feed-item-name">{{ post.name }}</a>
+                  <div class="feed-item-meta">
+                    <span class="feed-item-time">{{ post.time_created }}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="feed-item-body">
+                <div class="feed-item-content">
+                  <p class="feed-item-description" v-html="breakLines(post.text)" v-if="post.text.length > 0"></p>
+                  <div class="feed-item-actions">
+                    <a href="#" class="feed-item-upvote" @click="toggleLike(post)">
+                      <i class="fa fa-thumbs-up"></i>
+                      <!-- <p v-if="!post.is_liked">Like</p> -->
+                      {{ post.likes }} Likes
+                    </a>
+                    <a href="#" class="feed-item-share"><i class="fa fa-share"></i> </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="my-clubs-feed" v-else>
+            <div class="feed-item" v-for="post in my_clubs_posts" :key="post.id">
+              <div class="feed-item-header">
+                <div class="feed-item-avatar">
+                  <img :src="post.thumbnail" alt="Avatar">
+                </div>
+                <div class="feed-item-details">
+                  <a href="#" class="feed-item-name">{{ post.name }}</a>
+                  <div class="feed-item-meta">
+                    <span class="feed-item-time">{{ post.time_created }}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="feed-item-body">
+                <div class="feed-item-content">
+                  <p class="feed-item-description" v-html="breakLines(post.text)" v-if="post.text.length > 0"></p>
+                  <div class="feed-item-actions">
+                    <a href="#" class="feed-item-upvote" @click="toggleLike(post)">
+                      <i class="fa fa-thumbs-up"></i>
+                      <!-- <p v-if="!post.is_liked">Like</p> -->
+                      {{ post.likes }} Likes
+                    </a>
+                    <a href="#" class="feed-item-share"><i class="fa fa-share"></i> </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <!-- <div class="feed-item-body">
+            <div class="feed-item-content">
+              <p class="feed-item-description" v-html="breakLines(post.content)"  v-if="post.content.length > 0"></p>
+
+            </div>
+          </div>-->
+        <!-- </div> -->
+
+          </div>
+        </section>
+      </div>
+    </div>
+
+  </main>
+
+  <footer id="main-footer">
+    <div class="row primary">
+
+      <div class="column links">
+        <h3 class="h3_f">Contact</h3>
+        <ul>
+          <li>
+            Mobile Number: (+61)458342123
+          </li>
+          <li>
+            Email: contact@universe.au
+          </li>
+          <li>
+            <a class="a-text" href="#terms-of-services">Terms Of Service</a>
+          </li>
+          <li>
+            <a class="a-text" href="#support">Support</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="column about">
+
+        <h3 class="h3_f"> UniVerse</h3>
+
+        <p>
+          UniVerse is a social platform designed for students to connect with each other and find clubs to join. Our
+          platform provides a safe and engaging environment for students to settle in
+        </p>
+      </div>
+
+      <div class="column subscribe">
+        <h3 class="h3_f">Newsletter</h3>
+        <div>
+          <input id="input_f" type="email" placeholder="Your email id here" />
+          <button type="submit" id="b_f">Subscribe</button>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="row copyright">
+      <div class="footer-menu">
+
+        <a href="#">Home</a>
+        <a href="">Group</a>
+        <a href="">Event</a>
+        <a href="">Notifications</a>
+
+      </div>
+      <p>Copyright &copy; 2023 UniVerse</p>
+    </div>
+
+  </footer>
+
+
+
+
+</body>
+
+</html>

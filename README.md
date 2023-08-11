@@ -20,11 +20,13 @@ Universe is a social network platform for student clubs and events. It allows us
 To run the web app locally, follow these steps:
 
 1. Clone the repository: `git clone https://github.com/UAdelaide/23S1_WDC_UG063_Red_Devils`
-2. Install the required dependencies: `npm install`
-3. Turn on the database: `service mysql start`
-4. Load the database config and data: `mysql < db.sql`
-5. Run the app: `npm start`
-6. Access the app in your web browser at `http://localhost:8080`
+2. Install Docker at: https://www.docker.com/
+3. Run the code in the dev container
+4. Install the required dependencies: `npm install`
+5. Turn on the database: `service mysql start`
+6. Load the database config and data: `mysql < db.sql`
+7. Run the app: `npm start`
+8. Access the app in your web browser at `http://localhost:8080`
 
 <b> Warning: nodemailer might not work because the tokens will be expired for security reason. If you want to try that feature, please contact me via this email `quocdatngo813@gmail.com` so i can give you new tokens. Cheers! </b>
 

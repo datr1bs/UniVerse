@@ -26,7 +26,7 @@ To run the web app locally, follow these steps:
 5. Run the app: `npm start`
 6. Access the app in your web browser at `http://localhost:8080`
 
-<b> Warning: nodemailer might not work because the tokens will be expired for security reason. If you want to try that feature, please contact me via this email `quangnguyentechno@gmail.com` so i can give you new tokens. Cheers! </b>
+<b> Warning: nodemailer might not work because the tokens will be expired for security reason. If you want to try that feature, please contact me via this email `quocdatngo813@gmail.com` so i can give you new tokens. Cheers! </b>
 
 ## Technologies Used
 
